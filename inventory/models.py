@@ -5,6 +5,16 @@ from django.db import models
 
 # Create your models here.
 class Product(models.Model):
+    IN_STOCK = ("IS",)
+    OUT_OF_STOCK = ("OOS",)
+    BACKORDERED = ("BO",)
+
+    STOCK_STATUS = {
+        IN_STOCK: "In Stock",
+        OUT_OF_STOCK: "Out of Stock",
+        BACKORDERED: "Backordered",
+    }
+
     pid = models.CharField(max_length=255)
     name = models.CharField(max_length=100)
     slug = models.SlugField()
@@ -13,7 +23,9 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
     is_active = models.BooleanField()
-    stock_status = models.CharField(max_length=255)
+    stock_status = models.CharField(
+        max_length=3, choices=STOCK_STATUS, default=OUT_OF_STOCK
+    )
 
 
 class ProductLine(models.Model):
